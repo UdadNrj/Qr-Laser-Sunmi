@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/presentation/widgets/BNavigation/bottom_nav.dart';
-import 'package:flutter_application_1/presentation/widgets/BNavigation/routers.dart';
+import 'package:qr_laser_sunmi/presentation/widgets/BNavigation/bottom_nav.dart';
+import 'package:qr_laser_sunmi/presentation/widgets/BNavigation/routers.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -13,7 +13,6 @@ class _MainPageState extends State<MainPage> {
   int index = 0;
   String token = "";
   BNavigator? bottomRoute;
-
 
   @override
   void initState() {

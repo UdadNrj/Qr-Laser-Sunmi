@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/presentation/pages/login_page.dart';
-
-import 'package:flutter_application_1/providers/token_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_laser_sunmi/presentation/pages/main_page.dart';
+import 'package:qr_laser_sunmi/providers/token_provider.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: MainPage(), // Cambiamos LoginPage por MainPage
     );
   }
 }

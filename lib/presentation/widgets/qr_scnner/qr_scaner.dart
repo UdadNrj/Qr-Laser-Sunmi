@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/presentation/pages/main_page.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:io';
+
+import 'package:qr_laser_sunmi/presentation/pages/main_page.dart';
 
 class QRScaner extends StatefulWidget {
   const QRScaner({super.key});
