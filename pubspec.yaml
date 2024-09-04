@@ -2,12 +2,13 @@ name: qr_laser_sunmi
 description: "A new Flutter project."
 
 # Prevent accidental publishing to pub.dev.
-publish_to: "none"
+publish_to: 'none'
 
 version: 1.0.0+1
 
 environment:
   sdk: ^3.5.0
+
 dependencies:
   flutter:
     sdk: flutter
@@ -15,6 +16,7 @@ dependencies:
     sdk: flutter
   sunmi_barcode_scanner: ^0.0.4
   sunmi_scan: ^0.0.2
+  sunmi_scanner: ^0.0.4
 
 dev_dependencies:
   flutter_test:

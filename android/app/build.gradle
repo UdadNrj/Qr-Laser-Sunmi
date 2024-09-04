@@ -1,0 +1,39 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace = "com.example.qr_laser_sunmi"
+    compileSdk = 33 // Versión recomendada
+
+    ndkVersion = "21.1.6352462" // Versión recomendada de NDK o ajusta según necesidad
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    defaultConfig {
+        applicationId = "com.example.qr_laser_sunmi"
+        minSdk = 21 // Nivel mínimo de SDK soportado (puedes aumentar si es necesario)
+        targetSdk = 33 // Versión recomendada
+        versionCode = 1
+        versionName = "1.0"
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
