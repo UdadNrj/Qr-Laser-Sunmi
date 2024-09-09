@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qr_laser_sunmi/presentation/widgets/BNavigation/page_home.dart';
-import 'package:qr_laser_sunmi/presentation/widgets/BNavigation/page_qrs.dart';
-import 'package:qr_laser_sunmi/presentation/widgets/BNavigation/page_settings.dart';
+import 'package:qr_laser_sunmi/presentation/pages/page_home.dart';
+import 'package:qr_laser_sunmi/presentation/pages/page_qrs.dart';
+import 'package:qr_laser_sunmi/presentation/pages/page_settings.dart';
 
 class Routes extends StatelessWidget {
   final int index;
