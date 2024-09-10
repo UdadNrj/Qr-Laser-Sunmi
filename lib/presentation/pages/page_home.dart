@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:qr_laser_sunmi/providers/token_provider.dart';
 
 class PageHome extends StatefulWidget {
@@ -20,25 +17,6 @@ class _PageHomeState extends State<PageHome> {
   void initState() {
     super.initState();
     tokenValue = context.read<TokenProvider>().token.toString();
-    getVeues();
-  }
-
-  Future<void> getVeues() async {
-    const String nextUrl = "https://api-dev.woutick.com/back/v1/venue/";
-    final nextResponse = await http.get(Uri.parse(nextUrl), headers: {
-      'Authorization': 'Bearer $tokenValue',
-    });
-
-    if (nextResponse.statusCode == 200) {
-      String nextResponseBody = utf8.decode(nextResponse.bodyBytes);
-      final jsonData = jsonDecode(nextResponseBody);
-      setState(() {
-        venues = List<Map<String, dynamic>>.from(jsonData);
-        print(venues);
-      });
-    } else {
-      throw Exception("Fallo al hacer la siguiente petición");
-    }
   }
 
   @override
