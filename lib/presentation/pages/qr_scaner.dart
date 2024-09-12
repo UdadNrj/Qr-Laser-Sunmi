@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_laser_sunmi/data/database.dart';
 import 'dart:io';
-
 import 'package:qr_laser_sunmi/presentation/pages/tabs/main_page.dart';
 
 class QRScaner extends StatefulWidget {
@@ -15,6 +15,8 @@ class _QRScanerState extends State<QRScaner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
+  final DatabaseHelper _dbHelper =
+      DatabaseHelper(); // Instancia de DatabaseHelper
 
   @override
   void reassemble() {
@@ -65,12 +67,19 @@ class _QRScanerState extends State<QRScaner> {
     );
   }
 
+  // Lógica para manejar el escaneo de QR y almacenamiento en base de datos
   void onQRViewCamera(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.listen((event) {
+    controller.scannedDataStream.listen((event) async {
       setState(() {
         result = event;
       });
+
+      // Guardar el resultado escaneado en la base de datos
+      if (result != null) {
+        await _dbHelper.saveScannedQR(result!.code!);
+        print('Código QR guardado: ${result!.code}');
+      }
     });
   }
 
