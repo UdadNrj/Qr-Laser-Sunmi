@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:qr_laser_sunmi/presentation/qr_scaner.dart';
+import 'package:qr_laser_sunmi/presentation/pages/qr_scaner.dart';
 import 'package:sunmi_scanner/sunmi_scanner.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 

@@ -1,23 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:qr_laser_sunmi/providers/token_provider.dart';
 
 class PageHome extends StatefulWidget {
   const PageHome({super.key});
 
   @override
-  State<StatefulWidget> createState() => _PageHomeState();
+  State<PageHome> createState() => _PageHomeState();
 }
 
 class _PageHomeState extends State<PageHome> {
   List<Map<String, dynamic>> venues = [];
-  late String tokenValue;
-
-  @override
-  void initState() {
-    super.initState();
-    tokenValue = context.read<TokenProvider>().token.toString();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,22 +18,27 @@ class _PageHomeState extends State<PageHome> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Texto principal con estilo
-            Text(
-              'Escoge tu tipo de escáner',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Selecciona el tipo de escaneo que deseas realizar.',
-              style: TextStyle(
-                color: Colors.grey[400],
-                fontSize: 16,
-              ),
+            // Texto principal
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Escoge tu tipo de escáner',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Selecciona el tipo de escaneo que deseas realizar.',
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 16,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
 
@@ -69,29 +65,47 @@ class _PageHomeState extends State<PageHome> {
       BuildContext context, String imagePath, String title, Function onTap) {
     return GestureDetector(
       onTap: () => onTap(context),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-                image: AssetImage(imagePath),
-                fit: BoxFit.cover,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.4),
+                blurRadius: 15,
+                offset: Offset(0, 10),
               ),
-            ),
+            ],
           ),
-          const SizedBox(height: 10),
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Hero(
+                tag: title,
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                      image: AssetImage(imagePath),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -114,7 +128,7 @@ class _PageHomeState extends State<PageHome> {
         'El escáner láser permite la lectura a larga distancia con gran precisión, ideal para grandes almacenes y tiendas.');
   }
 
-  // Función que despliega el modal animado
+  // Función que despliega el modal para mostrar detalles del escáner
   void _showScannerDetails(
       BuildContext context, String title, String description) {
     showModalBottomSheet(

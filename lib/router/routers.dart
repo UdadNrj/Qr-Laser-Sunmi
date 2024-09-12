@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qr_laser_sunmi/presentation/pages/page_home.dart';
-import 'package:qr_laser_sunmi/presentation/pages/page_qrs.dart';
-import 'package:qr_laser_sunmi/presentation/pages/page_settings.dart';
+import 'package:qr_laser_sunmi/presentation/pages/tabs/page_home.dart';
+import 'package:qr_laser_sunmi/presentation/pages/tabs/page_qrs.dart';
+import 'package:qr_laser_sunmi/presentation/pages/tabs/page_inventary.dart';
 
 class Routes extends StatelessWidget {
   final int index;
@@ -11,7 +11,7 @@ class Routes extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       const PageHome(),
-      const PageSettings(),
+      const PageInventary(),
       const PageQR(),
     ];
     return pages[index];
