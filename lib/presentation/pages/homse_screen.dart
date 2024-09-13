@@ -5,41 +5,61 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Fondo negro moderno
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Bienvenido',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 28, // Tamaño de letra un poco más grande
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.5, // Espaciado para darle modernidad
-              ),
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          _buildGradientBackground(), // Fondo con degradado
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Bienvenido',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30, // Tamaño más grande para un efecto moderno
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2, // Aumentar el espacio entre letras
+                  ),
+                ),
+                const SizedBox(height: 50),
+                // Primer botón
+                _buildModernButton(
+                  context: context,
+                  label: 'Saber de QR Scanner',
+                  onPressed: () =>
+                      _navigateWithSlideAnimation(context, MainPage()),
+                ),
+                const SizedBox(height: 20),
+                // Segundo botón
+                _buildModernButton(
+                  context: context,
+                  label: 'Ingresar a Inventario',
+                  onPressed: () =>
+                      _navigateWithSlideAnimation(context, MainPage()),
+                ),
+              ],
             ),
-            const SizedBox(height: 50),
-            // Primer botón (moderno, blanco con texto negro)
-            _buildModernButton(
-              context: context,
-              label: 'Saber de QR Scanner',
-              onPressed: () => _navigateWithModernAnimation(context),
-            ),
-            const SizedBox(height: 20),
-            // Segundo botón (moderno, blanco con texto negro)
-            _buildModernButton(
-              context: context,
-              label: 'Ingresar a Inventario',
-              onPressed: () => _navigateWithModernAnimation(context),
-            ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Función para generar un fondo con degradado
+  Widget _buildGradientBackground() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.black, Colors.grey[900]!],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         ),
       ),
     );
   }
 
-  // Función para generar los botones con un estilo moderno
+  // Función para crear botones con estilo moderno
   Widget _buildModernButton({
     required BuildContext context,
     required String label,
@@ -47,13 +67,13 @@ class HomeScreen extends StatelessWidget {
   }) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white, // Fondo blanco para el botón
-        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+        backgroundColor: Colors.white, // Fondo blanco
+        padding: EdgeInsets.symmetric(horizontal: 60, vertical: 18),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30), // Bordes redondeados
         ),
-        elevation: 5, // Sombra leve para darle más profundidad
-        shadowColor: Colors.black.withOpacity(0.2), // Sombra más suave
+        elevation: 8, // Más sombra para profundidad
+        shadowColor: Colors.white.withOpacity(0.3), // Sombra blanca tenue
       ),
       onPressed: onPressed,
       child: Text(
@@ -61,39 +81,31 @@ class HomeScreen extends StatelessWidget {
         style: const TextStyle(
           color: Colors.black, // Texto negro
           fontSize: 18,
-          fontWeight:
-              FontWeight.bold, // Texto en negrita para mejor legibilidad
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
   }
 
-  // Función que realiza la navegación con una animación moderna
-  void _navigateWithModernAnimation(BuildContext context) {
+  // Función que realiza la navegación con una animación de deslizamiento
+  void _navigateWithSlideAnimation(BuildContext context, Widget page) {
     Navigator.push(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
+        pageBuilder: (context, animation, secondaryAnimation) => page,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          // Definimos la animación de escala y desvanecimiento
-          const begin = 0.8; // Comienza desde un tamaño más pequeño
-          const end = 1.0; // Termina en tamaño normal
+          const begin = Offset(
+              1.0, 0.0); // Empieza fuera de la pantalla, desde la derecha
+          const end = Offset.zero; // Termina en su posición original
           const curve = Curves.easeInOut;
 
-          var scaleTween = Tween(begin: begin, end: end).chain(
+          var tween = Tween(begin: begin, end: end).chain(
             CurveTween(curve: curve),
           );
 
-          var fadeTween = Tween(begin: 0.0, end: 1.0).chain(
-            CurveTween(curve: curve),
-          );
-
-          return ScaleTransition(
-            scale: animation.drive(scaleTween),
-            child: FadeTransition(
-              opacity: animation.drive(fadeTween),
-              child: child,
-            ),
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
           );
         },
         transitionDuration:

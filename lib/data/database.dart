@@ -50,4 +50,28 @@ class DatabaseHelper {
     var dbClient = await db;
     return await dbClient.query('scanned_qrs', orderBy: 'date_scanned DESC');
   }
+
+  // Eliminar un código QR por su id
+  Future<int> deleteScannedQR(int id) async {
+    var dbClient = await db;
+    return await dbClient.delete(
+      'scanned_qrs',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // Actualizar un código QR por su id
+  Future<int> updateScannedQR(int id, String newData) async {
+    var dbClient = await db;
+    return await dbClient.update(
+      'scanned_qrs',
+      {
+        'data': newData,
+        'date_scanned': DateTime.now().toIso8601String(),
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }

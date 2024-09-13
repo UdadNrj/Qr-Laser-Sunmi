@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:qr_laser_sunmi/data/database.dart';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:qr_laser_sunmi/data/database.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_laser_sunmi/data/scanned_data.dart';
 import 'package:qr_laser_sunmi/presentation/pages/tabs/main_page.dart';
 
 class QRScaner extends StatefulWidget {
@@ -29,15 +30,44 @@ class _QRScanerState extends State<QRScaner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('Escanear Código QR'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: () {
+              // Navegar a la pantalla de lista de códigos escaneados
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ScannedQRList()),
+              );
+            },
+          )
+        ],
+      ),
       body: Column(
         children: [
+          // Área de la cámara del QR
           Expanded(
               flex: 5,
               child: QRView(key: qrKey, onQRViewCreated: onQRViewCamera)),
+
+          // Mostrar el resultado escaneado en tiempo real
           Expanded(
-              child: (result != null)
-                  ? Text('Data: ${result!.code}')
-                  : const Text('Scan a code')),
+            flex: 1,
+            child: Column(
+              children: [
+                (result != null)
+                    ? Text('Data: ${result!.code}',
+                        style: const TextStyle(fontSize: 18))
+                    : const Text('Escanea un código QR',
+                        style: TextStyle(fontSize: 18)),
+              ],
+            ),
+          ),
+
+          // Botón para cerrar el escáner y volver a la página principal
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -72,15 +102,38 @@ class _QRScanerState extends State<QRScaner> {
     this.controller = controller;
     controller.scannedDataStream.listen((event) async {
       setState(() {
-        result = event;
+        result = event; // Actualiza el resultado del QR escaneado
       });
 
       // Guardar el resultado escaneado en la base de datos
       if (result != null) {
-        await _dbHelper.saveScannedQR(result!.code!);
-        print('Código QR guardado: ${result!.code}');
+        await _dbHelper
+            .saveScannedQR(result!.code!); // Almacena en la base de datos
+        _showQRDataDialog(
+            result!.code!); // Muestra el código QR escaneado en una alerta
       }
     });
+  }
+
+  // Función para mostrar un diálogo con el contenido escaneado
+  void _showQRDataDialog(String qrData) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Código QR Escaneado'),
+          content: Text('Contenido: $qrData'),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

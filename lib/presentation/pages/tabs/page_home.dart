@@ -12,55 +12,72 @@ class _PageHomeState extends State<PageHome> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Texto principal
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Escoge tu tipo de escáner',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+    return Scaffold(
+      backgroundColor: Colors.black, // Fondo negro moderno
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Texto principal
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Escoge tu tipo de escáner',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Selecciona el tipo de escaneo que deseas realizar.',
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 16,
+                  const SizedBox(height: 10),
+                  Text(
+                    'Selecciona el tipo de escaneo que deseas realizar.',
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
+                ],
+              ),
+              const SizedBox(height: 20),
 
-            // Imágenes de escáner con diferentes funcionalidades
-            _buildScannerOption(context, 'assets/icons/qr_scanner_L2S.jpg',
-                'Escáner QR', _showQRScannerDetails),
-            const SizedBox(height: 20),
-            _buildScannerOption(
+              // Opción de Escáner QR
+              _buildScannerOption(
+                context,
+                'assets/icons/qr_scanner_L2S.jpg',
+                'Escáner QR',
+                _showQRScannerDetails,
+              ),
+              const SizedBox(height: 20),
+
+              // Opción de Escáner de Barras
+              _buildScannerOption(
                 context,
                 'assets/icons/barcode_scanner_V2pro.jpg',
                 'Escáner de Barras',
-                _showBarcodeScannerDetails),
-            const SizedBox(height: 20),
-            _buildScannerOption(context, 'assets/icons/laser_scanner.jpg',
-                'Escáner Láser', _showLaserScannerDetails),
-          ],
+                _showBarcodeScannerDetails,
+              ),
+              const SizedBox(height: 20),
+
+              // Opción de Escáner Láser
+              _buildScannerOption(
+                context,
+                'assets/icons/laser_scanner.jpg',
+                'Escáner Láser',
+                _showLaserScannerDetails,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  // Widget para mostrar las imágenes con funcionalidad de click
+  // Widget para mostrar las imágenes con funcionalidad de clic
   Widget _buildScannerOption(
       BuildContext context, String imagePath, String title, Function onTap) {
     return GestureDetector(
@@ -72,9 +89,9 @@ class _PageHomeState extends State<PageHome> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.4),
+                color: Colors.black.withOpacity(0.5),
                 blurRadius: 15,
-                offset: Offset(0, 10),
+                offset: const Offset(0, 10),
               ),
             ],
           ),
@@ -133,7 +150,7 @@ class _PageHomeState extends State<PageHome> {
       BuildContext context, String title, String description) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.black.withOpacity(0.8),
+      backgroundColor: Colors.black.withOpacity(0.9),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
       ),
@@ -157,7 +174,7 @@ class _PageHomeState extends State<PageHome> {
               const SizedBox(height: 20),
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -172,7 +189,7 @@ class _PageHomeState extends State<PageHome> {
                 ),
               ),
               const SizedBox(height: 10),
-              Text(
+              const Text(
                 'Características:',
                 style: TextStyle(
                   color: Colors.white,

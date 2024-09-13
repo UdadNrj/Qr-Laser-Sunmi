@@ -9,24 +9,29 @@ class ScannedQRList extends StatefulWidget {
 }
 
 class _ScannedQRListState extends State<ScannedQRList> {
-  final DatabaseHelper _dbHelper = DatabaseHelper();
+  final DatabaseHelper _dbHelper =
+      DatabaseHelper(); // Instancia de DatabaseHelper
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QRs Escaneados'),
+        title: const Text('QRs Escaneados'),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _dbHelper.getScannedQrs(),
+        future: _dbHelper.getScannedQrs(), // Obtener los códigos almacenados
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(
+                child: CircularProgressIndicator()); // Indicador de carga
           }
 
           final qrCodes = snapshot.data!;
           if (qrCodes.isEmpty) {
-            return Center(child: Text('No hay códigos QR escaneados.'));
+            return const Center(
+                child: Text(
+                    'No hay códigos QR escaneados.')); // Mostrar mensaje si no hay códigos
           }
 
           return ListView.builder(
@@ -35,7 +40,7 @@ class _ScannedQRListState extends State<ScannedQRList> {
               final qr = qrCodes[index];
               return ListTile(
                 title: Text(qr['data']),
-                subtitle: Text(qr['date_scanned']),
+                subtitle: Text('Escaneado el: ${qr['date_scanned']}'),
               );
             },
           );

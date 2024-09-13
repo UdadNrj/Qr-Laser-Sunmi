@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:qr_laser_sunmi/presentation/pages/qr_scaner.dart';
 import 'package:sunmi_scanner/sunmi_scanner.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_laser_sunmi/data/database.dart'; // Asegúrate de que esta sea la ruta correcta para el archivo de la base de datos.
 
 class PageQR extends StatefulWidget {
   const PageQR({super.key});
@@ -17,6 +17,8 @@ class _PageQRState extends State<PageQR> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
+  final DatabaseHelper _dbHelper =
+      DatabaseHelper(); // Instancia de DatabaseHelper
 
   @override
   void reassemble() {
@@ -30,17 +32,23 @@ class _PageQRState extends State<PageQR> {
 
   String? scannedValue;
 
-  void _setScannedValue(String value) {
+  void _setScannedValue(String value) async {
     setState(() {
       scannedValue = value;
     });
+
+    // Guardar en la base de datos el valor escaneado por Sunmi
+    if (scannedValue != null) {
+      await _dbHelper.saveScannedQR(
+          scannedValue!); // Guardar el código en la base de datos
+    }
   }
 
   @override
   void initState() {
     super.initState();
     SunmiScanner.onBarcodeScanned().listen((event) {
-      _setScannedValue(event);
+      _setScannedValue(event); // Procesar el código escaneado con Sunmi
     });
   }
 
@@ -83,10 +91,10 @@ class _PageQRState extends State<PageQR> {
                     const SizedBox(width: 16.0),
                     FloatingActionButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const QRScaner()));
+                        setState(() {
+                          qRCamare =
+                              !qRCamare; // Cambia entre la cámara y el escáner Sunmi
+                        });
                       },
                       backgroundColor: Colors.white,
                       child: Icon(
@@ -105,10 +113,16 @@ class _PageQRState extends State<PageQR> {
   // logic Code Scanner Camare
   void onQRViewCamera(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.listen((event) {
+    controller.scannedDataStream.listen((event) async {
       setState(() {
         result = event;
       });
+
+      // Guardar el resultado del QR escaneado en la base de datos
+      if (result != null) {
+        await _dbHelper.saveScannedQR(
+            result!.code!); // Guardar el código escaneado en la base de datos
+      }
     });
   }
 
