@@ -1,4 +1,4 @@
-# flutter_application_1
+# scanner_laser_sunmi
 
 A new Flutter project.
 
